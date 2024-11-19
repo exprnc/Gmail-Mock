@@ -1,6 +1,10 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.org.jetbrains.kotlin.kapt)
+    alias(libs.plugins.hilt.android)
+//    alias(libs.plugins.screenshot)
+    alias(libs.plugins.android.junit)
 }
 
 android {
@@ -17,7 +21,10 @@ android {
     buildTypes {
         release {
             isMinifyEnabled = false
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
         }
     }
     compileOptions {
@@ -27,13 +34,33 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+    buildFeatures {
+        compose = true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.7"
+    }
+
+//    experimentalProperties["android.experimental.enableScreenshotTest"] = true
 }
 
 dependencies {
-
+    api(project(":domain"))
+    implementation(project(":core"))
+    api(project(":core-ui"))
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
+    kapt(libs.hilt.android.compiler)
+    implementation(libs.hilt.android)
+    implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
+    implementation(libs.androidx.hilt.navigation.compose)
+    implementation(libs.kotlin.reflect)
+
+    testImplementation(libs.bundles.unittest)
+    androidTestImplementation(libs.bundles.androidtest)
+    testImplementation(libs.turbine)
+//    screenshotTestImplementation(libs.androidx.compose.ui.tooling)
+    debugImplementation(libs.ui.test.manifest)
 }

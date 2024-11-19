@@ -1,4 +1,4 @@
-package com.exprnc.gmailmock.ui.theme
+package com.exprnc.coreui.theme
 
 import androidx.compose.ui.graphics.Color
 
